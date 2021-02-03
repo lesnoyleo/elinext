@@ -1,0 +1,63 @@
+<div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+    GitHub's API rate limit has been reached. It will be reset in one minute.
+  </div>
+</div>
+
+<div class="container">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+        <td mat-cell *matCellDef="let user"> {{user.firstName}} </td>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+        <td mat-cell *matCellDef="let user"> {{user.lastName}} </td>
+      </ng-container>
+    
+      <!-- Weight Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+      </ng-container>
+    
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="picture">
+        <th mat-header-cell *matHeaderCellDef> Avatar </th>
+        <td mat-cell *matCellDef="let user"><img [src]="user.picture" alt="аватар">  </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [length]="dataResponse.total"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = refreshFilter($event)">
+    </mat-paginator>
+    <div class="d-flex">
+      <div>
+        <button type="button" class="btn btn-primary" title="Выгрузить XML отчет по всем пользователям из таблицы" (click)="createXmlReport()">Выгрузить отчет XML</button>
+      </div> 
+      <div>
+        <button type="button" class="btn btn-secondary" title="Выгрузить txt отчет по всем пользователям из таблицы" (click)="createTxtReport()">Выгрузить отчет txt</button>
+      </div> 
+    </div>
+</div>
+
+<div class="alert alert-success" role="alert">
+  <div class="d-flex flex-row">
+    <div class="m-auto">
+      <h4 class="alert-heading">Отчет сформирован</h4>
+      <p>Отчет находится в корневой папке проекта .NetCore</p>
+      <hr>
+      <p class="mb-0">GUID отчета: {{guid}}</p>
+    </div>
+  </div>
+
+</div>
